@@ -2,6 +2,14 @@
 ### Project Description
 Project made as a demo application for Stfalcon. It contains a single console command to retrieve currency exchange rates from Monobank an PrivatBank providers.
 
+### Preparation
+To be able to launch the application Brevo API key is required. You can define it in docker-compose.yaml (see `MAILER_DNS` environment variable) or using `import` command inside a `php-fpm` container:
+```shell
+import MAILER_DSN=brevo+api://<YOUR_BREVO_API_KEY>@default
+```
+Also, check `SERVICE_NOTIFICATION_RECEIVER` variable and set a valid email address.
+
+### Launching
 To launch use console command inside `php-fpm` container:
 ```shell
 php bin/console currency:rates:check
