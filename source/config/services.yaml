@@ -1,0 +1,18 @@
+parameters:
+    currencyRateProviders:
+        !php/const App\Provider\Monobank\Monobank::NAME: App\Provider\Monobank\Monobank
+        !php/const App\Provider\PrivatBank\PrivatBank::NAME: App\Provider\PrivatBank\PrivatBank
+    currencyRateChangeThreshold: '%env(resolve:CURRENCY_RATE_CHANGE_THRESHOLD)%'
+    serviceNotificationReceiver: '%env(resolve:SERVICE_NOTIFICATION_RECEIVER)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'

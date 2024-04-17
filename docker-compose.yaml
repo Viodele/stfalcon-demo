@@ -1,0 +1,49 @@
+version: '3.8'
+x-name: 'stfalcon-demo'
+
+services:
+    percona:
+        container_name: stf_percona
+        build:
+            context: .docker/dev/percona
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - '3306:3306'
+        environment:
+            - MYSQL_DATABASE=test
+            - MYSQL_USER=test
+            - MYSQL_PASSWORD=test
+            - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            - ./.data/percona:/var/lib/mysql
+            - ./.logs/percona:/var/log/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-proot"]
+            interval: 5s
+            timeout: 3s
+            retries: 5
+
+    php-fpm:
+        container_name: stf_php
+        build:
+            context: .docker/dev/php-fpm
+            dockerfile: Dockerfile
+        tty: true
+        depends_on:
+            percona:
+                condition: service_healthy
+        ports:
+            - '9000:9000'
+        volumes:
+            - ./source:/var/www/app
+            - ./.logs/php:/var/log/php
+            - ./.docker/dev/php-fpm/.env:/var/www/app/.env
+        environment:
+            - APP_ENV=dev
+            - APP_DEBUG=true
+            - APP_SECRET=5c3c75df8bf7d1e9fd08a7e3fc86b5a9
+            - DATABASE_URL=mysql://test:test@stf_percona:3306/test
+            - CURRENCY_RATE_CHANGE_THRESHOLD=0.05
+            - MAILER_DSN=brevo+api://<YOUR_BREVO_API_KEY>@default
+            - SERVICE_NOTIFICATION_RECEIVER=test@example.com
