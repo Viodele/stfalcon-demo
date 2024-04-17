@@ -44,3 +44,6 @@ services:
             - APP_DEBUG=true
             - APP_SECRET=5c3c75df8bf7d1e9fd08a7e3fc86b5a9
             - DATABASE_URL=mysql://test:test@stf_percona:3306/test
+            - CURRENCY_RATE_CHANGE_THRESHOLD=0.05
+            - MAILER_DSN=brevo+api://<YOUR_BREVO_API_KEY>@default
+            - SERVICE_NOTIFICATION_RECEIVER=test@example.com

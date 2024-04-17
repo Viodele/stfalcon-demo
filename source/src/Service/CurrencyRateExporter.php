@@ -6,6 +6,7 @@ use App\Entity\CurrencyRate;
 use App\Repository\CurrencyRateRepository;
 use App\ValueObject\CurrencyRate as CurrencyRateValueObject;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 final readonly class CurrencyRateExporter
 {
@@ -19,12 +20,16 @@ final readonly class CurrencyRateExporter
     ) {
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     public function export(string $baseCurrencyCode, array $processableCurrencies): void
     {
         foreach ($this->currencyRateProviders as $providerClass) {
             $provider = new $providerClass();
             $this->updateLocalCurrencyRates($provider->fetchRates($baseCurrencyCode, $processableCurrencies));
         }
+        $this->notifier->flush();
     }
 
     /**
