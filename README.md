@@ -1,41 +1,34 @@
-## Teaser Control Core Application
+## Currency Rates Checker - Demo
 ### Project Description
-Environmental configuration files:
+Project made as a demo application for Stfalcon. It contains a single console command to retrieve currency exchange rates from Monobank an PrivatBank providers.
 
-`.env.dev` - contains settings for Staging (development) environment;
-
-`.env.prod` - contains setting for Production environment;
-
+To launch use console command inside `php-fpm` container:
+```shell
+php bin/console currency:rates:check
+```
+or
+```shell
+docker exec -it stf_php /bin/sh -c "bin/console currency:rates:check"
+```
 
 Docker configurations:
 
-`.docker/dev/*` - contains Docker and service configurations for Staging;
-
-`.docker/prod/*` - contains Docker and service configurations for Production;
+`.docker/dev/*` - contains Docker and service configurations for local development;
 
 
 Services (containers):
 
-`mysql (tc_mysql)` - Percona driven MySQL database;
+`percona (stf_percona)` - Percona driven MySQL database;
 
-`nginx (tc_nginx)` - Nginx driven web-server (API based);
-
-`php-fpm (tc_php)` - API server PHP core;
+`php-fpm (stf_php)` - Application core service;
 
 
 ### Docker Console Commands
-Build Local Workspace
-```bash
+Build Local Workspace (build-essential package required):
+```shell
 make
 ```
-or
-```bash
-make dev
-```
-Build With Production Targeting
-```bash
-make prod
-```
+
 Run Containers With Docker Compose:
 ```shell
 docker-compose up -d --build --force-recreate
@@ -55,23 +48,4 @@ docker exec -it stf_php /bin/sh
 Show logs:
 ```shell
 docker-compose logs -f
-```
-
----
-
-### Launching Local Tests
-
-- Launch all tests
-```bash
-make test
-```
-
-- PHP CodeSniffer (codestyle check):
-  `
-  bin/phpcs --standard=phpcs.xml -s -p -w
-  `
-
-Launch now:
-```shell
-docker exec -it stf_php bin/phpcs --standard=phpcs.xml -s -p -w
 ```
