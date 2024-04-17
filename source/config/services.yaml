@@ -1,6 +1,8 @@
 parameters:
     currencyRateProviders:
         !php/const App\Provider\Monobank\Monobank::NAME: App\Provider\Monobank\Monobank
+        !php/const App\Provider\PrivatBank\PrivatBank::NAME: App\Provider\PrivatBank\PrivatBank
+    currencyRateChangeThreshold: '%env(resolve:CURRENCY_RATE_CHANGE_THRESHOLD)%'
 
 services:
     _defaults:

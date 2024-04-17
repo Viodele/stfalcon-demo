@@ -13,7 +13,7 @@ composer:
 	docker exec -it $(PROJECT_ALIAS)_php /bin/sh -c "composer install"
 
 migrations:
-	#docker exec -it $(PROJECT_ALIAS)_php /bin/sh -c "bin/console doctrine:migrations:migrate --no-interaction"
+	docker exec -it $(PROJECT_ALIAS)_php /bin/sh -c "bin/console doctrine:migrations:migrate --no-interaction"
 
 test:
 	docker exec -it $(PROJECT_ALIAS)_php bin/phpcs --standard=phpcs.xml -s -p -w

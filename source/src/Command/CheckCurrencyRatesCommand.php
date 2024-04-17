@@ -7,6 +7,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'currency:rates:check',
@@ -26,10 +27,14 @@ final class CheckCurrencyRatesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $ui = new SymfonyStyle($input, $output);
+
         $this->currencyRateExporter->export(
             self::BASE_CURRENCY_CODE,
             self::PROCESSABLE_CURRENCY_CODES
         );
+
+        $ui->success('Currency rates have been updated.');
 
         return Command::SUCCESS;
     }
